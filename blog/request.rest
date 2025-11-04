@@ -1,0 +1,15 @@
+## POST api/blogs (add a new blog)
+
+post http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+"author": "Mahesh",
+"url": "https://github.com/initxmahesh",
+"title": "Part13 is completed",
+"likes": 12502520
+}
+
+## DELETE api/blogs/:id (delete a blog)
+
+delete http://localhost:3001/api/blogs/4
