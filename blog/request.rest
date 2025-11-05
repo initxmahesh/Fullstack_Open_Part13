@@ -1,15 +1,24 @@
-## POST api/blogs (add a new blog)
+### POST api/blogs (add a new blog)
 
 post http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-"author": "Mahesh",
-"url": "https://github.com/initxmahesh",
-"title": "Part13 is completed",
+"author": "Admin",
+"url": "https://github.com/admin",
+"title": "Part13 is completed successfully",
 "likes": 12502520
 }
 
-## DELETE api/blogs/:id (delete a blog)
+###
+
+put http://localhost:3001/api/blogs/6
+Content-Type: application/json
+
+{
+"likes": 1200
+}
+
+### DELETE api/blogs/:id (delete a blog)
 
 delete http://localhost:3001/api/blogs/4
