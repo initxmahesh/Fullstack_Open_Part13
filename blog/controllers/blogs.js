@@ -62,14 +62,18 @@ router.post("/", tokenExtractor, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", blogFinder, async (req, res, next) => {
+router.delete("/:id", tokenExtractor, blogFinder, async (req, res, next) => {
   try {
-    if (req.blog) {
-      await req.blog.destroy();
-      res.status(204).end();
-    } else {
-      res.status(404).json({ error: "blog is not found" });
+    if (!req.blog) {
+      return res.status(404).json({ error: "blog is not found" });
     }
+    if (req.blog.userId !== req.decodedToken.id) {
+      return res
+        .status(401)
+        .json({ error: "unauthorized: you cannot delete other blogs" });
+    }
+    await req.blog.destroy();
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
