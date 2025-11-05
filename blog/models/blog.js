@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize')
+const { Model, DataTypes } = require("sequelize");
 
-const { sequelize } = require('../utils/db')
+const { sequelize } = require("../utils/db");
 
 class Blog extends Model {}
 Blog.init(
@@ -34,4 +34,4 @@ Blog.init(
   }
 );
 
-module.exports = Blog
+module.exports = Blog;
