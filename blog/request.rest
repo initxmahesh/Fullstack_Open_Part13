@@ -31,8 +31,8 @@ post http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-"username": "hello",
-"name": "Tester"
+"username": "notanemail",
+"name": "test1"
 }
 
 
@@ -41,7 +41,7 @@ post http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-"username": "hello",
+"username": "hello.change",
 "password": "secret"
 }
 
