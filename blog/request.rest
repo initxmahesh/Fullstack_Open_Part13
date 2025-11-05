@@ -2,13 +2,13 @@
 
 post http://localhost:3001/api/blogs
 Content-Type: application/json
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjo3LCJpYXQiOjE3NjIzNDcxODV9.O9SETgPOQNyjK37SFCeppsDJ_36B0wLxPE5cCTmCV14
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyQGdtYWlsLmNvbSIsImlkIjo4LCJpYXQiOjE3NjIzNTA4NDd9.MJb_ufxVllT6ltv4qfR7hx6A08bAc9kIWZ-6-L-E4xo
 
 {
 "author": "unauthorized",
 "url": "https://github.com/testing1",
-"title": "unauthorized access",
-"likes": 3003
+"title": "react",
+"likes": 5000
 }
 
 ###
