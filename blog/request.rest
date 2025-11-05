@@ -2,13 +2,13 @@
 
 post http://localhost:3001/api/blogs
 Content-Type: application/json
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyQGdtYWlsLmNvbSIsImlkIjo4LCJpYXQiOjE3NjIzNTA4NDd9.MJb_ufxVllT6ltv4qfR7hx6A08bAc9kIWZ-6-L-E4xo
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyQGdtYWlsLmNvbSIsImlkIjo4LCJpYXQiOjE3NjIzNTExNjR9.e2DiWXRf4U31ew4aIeeSMIjuey3_mDsuvYCOWOOt-EA
 
 {
-"author": "unauthorized",
+"author": "react",
 "url": "https://github.com/testing1",
-"title": "react",
-"likes": 5000
+"title": "testing search",
+"likes": 2000
 }
 
 ###
