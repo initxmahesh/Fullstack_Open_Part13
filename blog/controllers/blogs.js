@@ -15,7 +15,13 @@ const blogFinder = async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
   try {
-    const blogs = await Blog.findAll();
+    const blogs = await Blog.findAll({
+      attributes: { exclude: ['userId'] },
+      include: {
+        model: User,
+        attributes: ['name', 'username']
+      }
+    });
     res.json(blogs);
   } catch (error) {
     next(error);
