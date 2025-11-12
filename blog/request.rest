@@ -2,14 +2,14 @@
 
 post http://localhost:3001/api/blogs
 Content-Type: application/json
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjI4NDU0NzZ9.O2yJ8EeCW0dHkAiajOlRkdQ3W0u1eFJdmgURFX0HUpU
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE3NjI5NzIwODh9.Jm_NT40HR2g5vfSo70emaAxAuKDIxBVD-wkJx0oqPik
 
 {
-"author": "nodejs",
-"url": "https://nodejs.git.in",
-"title": "nodeing",
-"likes": 5000,
-"year": 1991
+"author": "checking1",
+"url": "https://checking.com",
+"title": "Checking2",
+"likes": 5201,
+"year": 2024
 }
 
 ###
@@ -33,7 +33,7 @@ post http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-"username": "test1@gmail.com",
+"username": "test2@gmail.com",
 "name": "test1"
 }
 
@@ -43,7 +43,7 @@ post http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-"username": "test1@gmail.com",
+"username": "test2@gmail.com",
 "password": "secret"
 }
 
@@ -54,4 +54,24 @@ Content-Type: application/json
 
 {
     "username": "hello.change"
+}
+
+###
+
+post http://localhost:3001/api/readinglists
+Content-Type: application/json
+
+{
+  "blogId": 5,
+  "userId": 2
+}
+
+
+###
+put http://localhost:3001/api/readinglists/2
+Content-Type: application/json
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NjI5NzIyOTd9.xuklI8eqaUukA79x5mcy8ATa-2CtQcHDQR0YRfYw51Y
+
+{
+    "read": true
 }

@@ -1,16 +1,16 @@
 const router = require("express").Router();
 
-const { User, Blog } = require("../models");
+const { User, Blog, ReadingList } = require("../models");
 
 router.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
       include: {
         model: Blog,
-        attributes: { exclude: ["userId"] },
+        attributes: ["id", "author", "title", "url", "likes"],
       },
     });
-    res.json(users);
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
@@ -18,8 +18,15 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const user = await User.create(req.body);
-    res.json(user);
+    const { name, username } = req.body;
+
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(400).json({ error: "Username already taken" });
+    }
+
+    const user = await User.create({ name, username });
+    res.status(201).json(user);
   } catch (error) {
     next(error);
   }
@@ -27,12 +34,28 @@ router.post("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).end();
+    const includeOptions = {
+      model: Blog,
+      as: "readings",
+      attributes: ["id", "url", "title", "author", "likes", "year"],
+      through: {
+        model: ReadingList,
+        attributes: ["id", "read"],
+      },
+    };
+
+    if (req.query.read !== undefined) {
+      includeOptions.through.where = { read: req.query.read === "true" };
     }
+
+    const user = await User.findByPk(req.params.id, {
+      attributes: ["name", "username"],
+      include: includeOptions,
+    });
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -40,18 +63,24 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/:username", async (req, res, next) => {
   try {
-    const user = await User.findOne({
-      where: {
-        username: req.params.username,
-      },
+    const existingUser = await User.findOne({
+      where: { username: req.params.username },
     });
-    if (user) {
-      user.username = req.body.username;
-      await user.save();
-      res.json(user);
-    } else {
-      res.status(404).json({ error: "user not found" });
+
+    if (!existingUser) {
+      return res.status(404).json({ error: "User not found" });
     }
+
+    if (req.body.username) existingUser.username = req.body.username;
+    if (req.body.name) existingUser.name = req.body.name;
+
+    await existingUser.save();
+
+    res.status(200).json({
+      id: existingUser.id,
+      name: existingUser.name,
+      username: existingUser.username,
+    });
   } catch (error) {
     next(error);
   }
