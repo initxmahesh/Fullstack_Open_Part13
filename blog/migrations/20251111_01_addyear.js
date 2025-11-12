@@ -5,13 +5,18 @@ module.exports = {
     await queryInterface.addColumn("blogs", "year", {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        min: 1991,
-        max: new Date().getFullYear(),
-      },
+    });
+    await queryInterface.addConstraint("blogs", {
+      fields: ["year"],
+      type: "check",
+      name: "year_checker",
+      where: queryInterface.sequelize.literal(
+        "year >= 1991 AND year <= EXTRACT(YEAR FROM CURRENT_DATE)"
+      ),
     });
   },
   down: async ({ context: queryInterface }) => {
-    await queryInterface.removeColumn("blogs","year");
+    await queryInterface.removeConstraint("blogs", "year_checker");
+    await queryInterface.removeColumn("blogs", "year");
   },
 };
