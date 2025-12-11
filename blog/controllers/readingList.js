@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { ReadingList, Blog, User } = require("../models");
+const { ReadingList, Blog } = require("../models");
 const { tokenExtractor } = require("../utils/middleware");
 
 router.get("/", async (req, res, next) => {
@@ -48,9 +48,8 @@ router.put("/:id", tokenExtractor, async (req, res, next) => {
     if (!readingList) {
       return res.status(404).json({ error: "Particular list is not found" });
     }
-    const user = await User.findByPk(req.decodedToken.id);
 
-    if (readingList.userId !== user.id) {
+    if (readingList.userId !== req.user.id) {
       return res
         .status(403)
         .json({ error: "Not authorized to update this field" });

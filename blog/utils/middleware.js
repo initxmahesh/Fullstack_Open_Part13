@@ -1,22 +1,62 @@
 const jwt = require("jsonwebtoken");
 const { SECRET } = require("../utils/config");
+const { User, Session } = require("../models");
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: "unknown endpoint" });
 };
 
-const tokenExtractor = (req, res, next) => {
+const tokenExtractor = async (req, res, next) => {
   const authorization = req.get("authorization");
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    const token = authorization.substring(7);
+
     try {
-      req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
-    } catch {
-      return res.status(401).json({ error: "token invalid" });
+      const decodedToken = jwt.verify(token, SECRET);
+      const session = await Session.findOne({
+        where: { token: token },
+        include: {
+          model: User,
+          attributes: ["id", "disabled"],
+        },
+      });
+
+      if (!session) {
+        return res.status(401).json({ error: "session expired" });
+      }
+
+      if (session.userId !== decodedToken.id) {
+        await session.destroy();
+        return res.status(401).json({ error: "session mismatch" });
+      }
+
+      const user = await User.findByPk(decodedToken.id);
+
+      if (!user) {
+        await session.destroy();
+        return res.status(401).json({ error: "user not found" });
+      }
+
+      if (user.disabled) {
+        return res.status(403).json({ error: "account disabled" });
+      }
+
+      req.decodedToken = decodedToken;
+      req.session = session;
+      req.user = user;
+      next();
+    } catch (error) {
+      if (
+        error.name === "JsonWebTokenError" ||
+        error.name === "TokenExpiredError"
+      ) {
+        return res.status(401).json({ error: "token invalid" });
+      }
+      next(error);
     }
   } else {
     return res.status(401).json({ error: "token missing" });
   }
-  next();
 };
 
 const errorHandler = (error, req, res, next) => {
